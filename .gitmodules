@@ -1,0 +1,3 @@
+[submodule "src/neurips_bdl_starter_kit"]
+	path = src/neurips_bdl_starter_kit
+	url = https://github.com/izmailovpavel/neurips_bdl_starter_kit
