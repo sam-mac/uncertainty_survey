@@ -1,0 +1,4 @@
+# ignore all data
+data/*
+!data/__init__.py 
+
