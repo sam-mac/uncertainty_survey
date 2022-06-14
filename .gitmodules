@@ -1,3 +1,6 @@
 [submodule "src/neurips_bdl_starter_kit"]
 	path = src/neurips_bdl_starter_kit
 	url = https://github.com/izmailovpavel/neurips_bdl_starter_kit
+[submodule "src/CIFAR-10.1"]
+	path = src/CIFAR-10.1
+	url = https://github.com/modestyachts/CIFAR-10.1.git
