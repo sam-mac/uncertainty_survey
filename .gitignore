@@ -1,4 +1,4 @@
 # ignore all data
 data/*
 !data/__init__.py 
-
+!data/results/__init__.py
