@@ -1,10 +1,12 @@
 # UQ PhD - Uncertainty Survey
 Survey of a few methods for inferring uncertainty. Datasets will include standard benchmarks for classification, regression, multi-model learning, and domain adaption. If time permits, wother benchmarks might be added (relating to graph learning and counterfactual inference), but let's see how things progress.
 
-## TODO 
+## Tasks
 
-- basic py script for uploading CIFAR-10.1 data
+#### TODO
 - Implement anything on CIFAR-10 
+- 1. ensure cifar_bdl and cifar_10_1 align w.r.t. image shape and labels
+- 2. ensure cifar10 test isnt validation...
 - validate laptop 
 - validate weiner
 - Implement basic report output
@@ -14,6 +16,9 @@ Survey of a few methods for inferring uncertainty. Datasets will include standar
 
 #### DONE
 - bash script for obtaining CIFAR-10.1 data
+- basic py script for uploading CIFAR-10.1 data
+- basic py script for uploading hmcbaseline CIFAR-10.1 data
+
 
 ## Computational environment
 -   Github with collab first
