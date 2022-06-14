@@ -2,7 +2,7 @@
 Survey of a few methods for inferring uncertainty. Datasets will include standard benchmarks for classification, regression, multi-model learning, and domain adaption. If time permits, wother benchmarks might be added (relating to graph learning and counterfactual inference), but let's see how things progress.
 
 ## TODO 
-- bash script for obtaining CIFAR-10.1 data
+
 - basic py script for uploading CIFAR-10.1 data
 - Implement anything on CIFAR-10 
 - validate laptop 
@@ -11,6 +11,9 @@ Survey of a few methods for inferring uncertainty. Datasets will include standar
 - Implement Baseline LL solution on CIFAR-10
 - Implement Laplace inference on CIFAR-10 
 - Implement SG-MCMC inference on CIFAR-10
+
+#### DONE
+- bash script for obtaining CIFAR-10.1 data
 
 ## Computational environment
 -   Github with collab first
