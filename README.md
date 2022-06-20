@@ -73,14 +73,27 @@ Thus, we constrain other factor's in the predictive distribution, to not only co
 Importantly, we aim to be relevant, and applicable in our survey.
 
 ## Methodology 
-
 - Review of postierior inference techniques
 - first with basic benchmarks and baselines
 - keep non-posterior factors fixed, but relevant: i.e. datasets, likelihoods, model prior
 - establish best inference technique w.r.t. complexity, fidelity (to true posterior), and robustness (to shifts) 
 - then we extend to multi-omic dataset 
 
+Basically, the following set of combinations will be implemented; that defines the exploration space.
+
+#### Evidence / Dataset
+-   {consider} Classification:
+	-   CIFAR-10 [[Approximate Inference in BDL (comp)]]
+	-   CIFAR-10.1-v6 from https://github.com/modestyachts/CIFAR-10.1
+-   {later} Regression
+	-   RNA target
+-   {later} Regression (unknown likelihood)
+	-   UCI-GAP [[Shifts (comp)]]
+-   {later} NLP (transfer learning)
+	-   [[Shifts (comp)]]
+
 #### Priors (Fixed / abstracted away)
+
 - {consider} weight init (Gaussian or sparsity promoting, e.g. Laplace prior)
 - {consider} weight decay,
 - {consider} dropout
@@ -89,22 +102,14 @@ Importantly, we aim to be relevant, and applicable in our survey.
 - {later} Architectural priors - CONSTANT WITHIN DATASET - changes with dataset/task
 
 #### Likelihoods (Fixed)**
+
     - {consider} **categorical** -> CIFAR
 	- {consider? / later if time permits} **dirichlet** -> CIFAR
     - {later} zero-inflated negative binomial -> some RNA?
     - {later} zero-inflated poisson -> some RNA?
     - {later} gaussian -> weather?
 
-## Datasets and likelihoods
--   {consider} Classification:
-	-   CIFAR-10 [[Approximate Inference in BDL (comp)]]
-	-   CIFAR-10.1-v6 from https://github.com/modestyachts/CIFAR-10.1
--   Regression
-	-   RNA target
--   Regression (unknown likelihood)
-	-   UCI-GAP [[Shifts (comp)]]
--   NLP (transfer learning)
-	-   [[Shifts (comp)]]
+
 
 ### Priors** (Fixed / abstracted away)
 **Inductive Priors:**
