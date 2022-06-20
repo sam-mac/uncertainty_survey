@@ -19,27 +19,17 @@ Survey of a few methods for inferring uncertainty. Datasets will include standar
 - basic py script for uploading CIFAR-10.1 data
 - basic py script for uploading hmcbaseline CIFAR-10.1 data
 
-
 ## Computational environment
--   Github with collab first
--   pytorch lightning, W&B, pyro
--   Colab 
+-   pytorch (abstracted with lightning), 
+-   W&B (tracking experiments)
 -   docker (todo)
 -   Weiner (todo)
 -   website output
 	-   visualisations
 	-   results output
 
-## Datasets and likelihoods
--   Classification (softmax likelihood):
-	-   CIFAR-10 [[Approximate Inference in BDL (comp)]]
-	-   CIFAR-10.1-v6 from https://github.com/modestyachts/CIFAR-10.1
--   Regression (unknown likelihood)
-	-   UCI-GAP [[Shifts (comp)]]
--   Regression (zero inflated Poisson)
-	-   RNA target???
--   NLP (transfer learning)
-	-   [[Shifts (comp)]]
+# Structure of Survey
+
 
 ## Motivation and Problem Definition
 We aspire (in the PhD) to create an interpretable model for multi-modal omics problems in order to make statements about safety and scientific explanations (i.e. need *transparency*) 
@@ -56,18 +46,76 @@ Hence, the problem is specificaly:
 The predictive marginal distribution is given as
 $$p(y*|x*, \mathcal{D}, \mathcal{A}) = \int_{\Theta \in \Omega}{p(y*|x*,\Theta)p(\Theta|\mathcal{D}, \mathcal{A})} d\Theta,$$
 which requies evaluating the parametric posterior:
-$$p(\Theta|\mathcal{D}, \mathcal{A}) = \frac{p(\mathcal{D}|\Theta, \mathcal{A})p(\Theta|\mathcal{A})}{p(D|\mathcal{A})}.$$
-### 1. Advancing Uncertainty Quantification 
-This focuses on the (approximate) posterior $p(\Theta|\mathcal{D})$.
+$$p(\Theta|\mathcal{D}, \mathcal{A}) = \frac{p(\mathcal{D}|\Theta, \mathcal{A})p(\Theta|\mathcal{A})}{p(D)}.$$
 
-- require review of postierior inference techniques (to ramp the Bayesian crank)
-- first with basic benchmarks and baselines (for sanity check)
-- establish best inference technique w.r.t. complexity, fidelity (to true posterior), and robustness (to shifts)
+where 
+
+- $\mathcal{D}$ is evidence/data
+- $y* = x*$ if we are in a generative setting
+- $\mathcal{A}$ represents model architecture, hyperparameters, and assumptions (e.g. kernel)
+    - defines whether we are in **a parametric**, or **non-parametric** setting
+- $\Theta$ is some sufficient statistic: either (1) the parameters which are “conditioned” by evidence, or some latent  variable sufficient statistic
+
+Hence, we must be aware of
+
+- **Evidence** p(D)
+- **Likelihood** $p(y|x*, D, A, \Theta)$
+- **Predictive prior** $p(\Theta|\mathcal{D}, \mathcal{A})$
+    - updated with posterior inference… 
+
+## Focused Aim
+This survey will focus on $p(\Theta|\mathcal{D}, \mathcal{A})$ as the central object of interest (to ramp the Bayesian crank). 
+
+This is the central focus… i.e. our exploration space. There are many reasons why (ref report).
+
+Thus, we constrain other factor's in the predictive distribution, to not only control changes within the predictive prior, but to focus the survey - to facilitate progress.
+
+Importantly, we aim to be relevant, and applicable in our survey.
+
+## Methodology 
+
+- Review of postierior inference techniques
+- first with basic benchmarks and baselines
+- keep non-posterior factors fixed, but relevant: i.e. datasets, likelihoods, model prior
+- establish best inference technique w.r.t. complexity, fidelity (to true posterior), and robustness (to shifts) 
 - then we extend to multi-omic dataset 
 
-### 2. (out-of-scope) Priors
-- architectural priors
-- distributional priors
+#### Priors (Fixed / abstracted away)
+- {consider} weight init (Gaussian or sparsity promoting, e.g. Laplace prior)
+- {consider} weight decay,
+- {consider} dropout
+- {consider} data augmentation (dual to architecture?)
+- {later} learning prior using the Marginal Likelihood … needs to be in function space, not weight space (e.g. with kernels..)
+- {later} Architectural priors - CONSTANT WITHIN DATASET - changes with dataset/task
+
+#### Likelihoods (Fixed)**
+    - {consider} **categorical** -> CIFAR
+	- {consider? / later if time permits} **dirichlet** -> CIFAR
+    - {later} zero-inflated negative binomial -> some RNA?
+    - {later} zero-inflated poisson -> some RNA?
+    - {later} gaussian -> weather?
+
+## Datasets and likelihoods
+-   {consider} Classification:
+	-   CIFAR-10 [[Approximate Inference in BDL (comp)]]
+	-   CIFAR-10.1-v6 from https://github.com/modestyachts/CIFAR-10.1
+-   Regression
+	-   RNA target
+-   Regression (unknown likelihood)
+	-   UCI-GAP [[Shifts (comp)]]
+-   NLP (transfer learning)
+	-   [[Shifts (comp)]]
+
+### Priors** (Fixed / abstracted away)
+**Inductive Priors:**
+- {consider} dropout
+- {consider} data augmentation (dual to architecture?)
+- {later} Architectural priors - CONSTANT WITHIN DATASET - changes with dataset/task
+- {later} learning prior using the Marginal Likelihood … needs to be in function space, not weight space (e.g. with kernels..)
+**Distributional Priors:**
+- {consider} weight init (Gaussian or sparsity promoting, e.g. Laplace prior)
+- {consider} weight decay, 
 
 ### 3. (out-of-scope) Meta-learning
 In the future focus on $\mathcal{A}$.
+
