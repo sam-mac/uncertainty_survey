@@ -109,12 +109,12 @@ Basically, the following set of combinations will be implemented; that defines t
 
 #### Likelihoods are mostly fixed
 
-    - {consider} **categorical** -> CIFAR
-	- {consider? / later if time permits} **dirichlet** -> CIFAR
-    - {later} zero-inflated negative binomial -> some RNA?
-    - {later} zero-inflated poisson -> some RNA?
-    - {later} gaussian -> weather?
-	- {later} tempered likelihood for cold/hot posterior sect Likelihood for BNNs
+- {consider} **categorical** -> CIFAR
+- {consider? / later if time permits} **dirichlet** -> CIFAR
+- {later} zero-inflated negative binomial -> some RNA?
+- {later} zero-inflated poisson -> some RNA?
+- {later} gaussian -> weather?
+- {later} tempered likelihood for cold/hot posterior sect Likelihood for BNNs
 
 #### Priors are mostly fixed
 
