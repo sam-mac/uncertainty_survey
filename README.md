@@ -5,6 +5,7 @@ Survey of a few methods for inferring uncertainty. Datasets will include standar
 
 #### TODO
 - Implement anything on CIFAR-10 
+- Conda yaml to base of repo
 - 1. ensure cifar_bdl and cifar_10_1 align w.r.t. image shape and labels
 - 2. ensure cifar10 test isnt validation...
 - validate laptop 
