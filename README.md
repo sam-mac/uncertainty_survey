@@ -111,16 +111,18 @@ Basically, the following set of combinations will be implemented; that defines t
 
 
 
-### Priors** (Fixed / abstracted away)
+#### Priors** (Fixed / abstracted away)
+
 **Inductive Priors:**
 - {consider} dropout
 - {consider} data augmentation (dual to architecture?)
 - {later} Architectural priors - CONSTANT WITHIN DATASET - changes with dataset/task
 - {later} learning prior using the Marginal Likelihood … needs to be in function space, not weight space (e.g. with kernels..)
+
 **Distributional Priors:**
 - {consider} weight init (Gaussian or sparsity promoting, e.g. Laplace prior)
 - {consider} weight decay, 
 
-### 3. (out-of-scope) Meta-learning
+## (out-of-scope) Meta-learning
 In the future focus on $\mathcal{A}$.
 
