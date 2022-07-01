@@ -1,5 +1,5 @@
 # UQ PhD - Uncertainty Survey
-Survey of a few methods for inferring uncertainty. Datasets will include standard benchmarks for classification, regression, multi-model learning, and domain adaption. If time permits, wother benchmarks might be added (relating to graph learning and counterfactual inference), but let's see how things progress.
+Survey of a few methods for inferring posterior, which is required for ascertaining uncertainty (about model/knowledge, as well as data). Datasets will include standard benchmarks for classification, regression, multi-model learning, and domain adaption. If time permits, wother benchmarks might be added (relating to graph learning and counterfactual inference), but let's see how things progress.
 
 ## Tasks
 
@@ -12,7 +12,7 @@ Survey of a few methods for inferring uncertainty. Datasets will include standar
 - validate weiner
 - Implement basic report output
 - Implement Baseline LL solution on CIFAR-10
-- Implement Laplace inference on CIFAR-10 
+- Implement Laplace inference on CIFAR-10
 - Implement SG-MCMC inference on CIFAR-10
 
 #### DONE
@@ -45,6 +45,7 @@ Hence, the problem is specificaly:
 ## Solution Design
 
 The predictive marginal distribution is given as
+
 $$p(y*|x*, \mathcal{D}, \mathcal{A}) = \int_{\Theta \in \Omega}{p(y*|x*,\Theta)p(\Theta|\mathcal{D}, \mathcal{A})} d\Theta,$$
 which requies evaluating the parametric posterior:
 $$p(\Theta|\mathcal{D}, \mathcal{A}) = \frac{p(\mathcal{D}|\Theta, \mathcal{A})p(\Theta|\mathcal{A})}{p(D)}.$$
@@ -125,3 +126,7 @@ Basically, the following set of combinations will be implemented; that defines t
 
 ## (out-of-scope) 
 In the future focus on $\mathcal{A}$.
+- deep GP
+- deep kernel learning
+- meta learning is for distribution shift
+- active learning is distribution shift

@@ -10,7 +10,6 @@ import torch
 import torch.nn.functional as F
 import torch.optim as optim
 
-
 repo_root = os.path.join(os.getcwd())
 assert os.getcwd().split('/')[-1] == 'uncertainty_survey', "interpreter not in correct position, or src files need to package..."
 sys.path.append(repo_root)
@@ -101,7 +100,7 @@ def main(model_key, prior_variance, str_device='mps'):
         
         logits = net_fn(x)
         num_classes = logits.shape[-1]
-        labels = F.one_hot(y.to(torch.int64), num_classes= num_classes)
+        labels = F.one_hot(y.to(torch.int64), num_classes=num_classes)
         softmax_xent = torch.sum(labels * F.log_softmax(logits))
 
         return softmax_xent
