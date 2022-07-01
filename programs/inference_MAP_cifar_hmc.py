@@ -1,37 +1,80 @@
+# devy stuff
 import os
-import torch
-import math
-import torch.nn.functional as F
-from src.neurips_bdl_starter_kit import pytorch_models as p_models
+import sys
+import copy
 
+# mathy stuff
+import numpy as np
+import math
+import torch
+import torch.nn.functional as F
+import torch.optim as optim
+
+
+repo_root = os.path.join(os.getcwd())
+assert os.getcwd().split('/')[-1] == 'uncertainty_survey', "interpreter not in correct position, or src files need to package..."
+sys.path.append(repo_root)
+from src.neurips_bdl_starter_kit import pytorch_models as p_models
+from src.neurips_bdl_starter_kit import metrics
+
+
+# global variables....
 
 # directories
-dir_data = os.path.join(os.path.dirname(__file__), '../data')
+dir_this_file = os.path.dirname(__file__)
+dir_src = os.path.join(dir_this_file, '../src')
+dir_data = os.path.join(dir_this_file, '../data')
+dir_raw = os.path.join(dir_data, 'raw')
 dir_processing = os.path.join(dir_data, 'processing')
 dir_cifar_clean = os.path.join(dir_processing, 'cifar')
+
 # filenames
-# # raw cifar 
-# dir_cifar_bdl = os.path.join(dir_data, 'cifar10_bdl_comp')
-# dir_cifar10_1 = os.path.join(dir_data, 'cifar10.1')
-# # dataset filenames
-# filepath_dataset_train = os.path.join(dir_cifar_clean, 'dataset_cifar_train.pt')
-# filepath_dataset_test0 = os.path.join(dir_cifar_clean, 'dataset_cifar_test0.pt')
-# filepath_dataset_test1 = os.path.join(dir_cifar_clean, 'dataset_cifar_test1.pt')
+# raw cifar 
+dir_cifar_bdl = os.path.join(dir_raw, 'cifar10_bdl_comp')
+dir_cifar10_1 = os.path.join(dir_raw, 'cifar10.1')
+# dataset filenames
+filepath_dataset_train = os.path.join(dir_cifar_clean, 'dataset_cifar_train.pt')
+filepath_dataset_test0 = os.path.join(dir_cifar_clean, 'dataset_cifar_test0.pt')
+filepath_dataset_test1 = os.path.join(dir_cifar_clean, 'dataset_cifar_test1.pt')
 # loader filenames
 filepath_loader_train = os.path.join(dir_cifar_clean, 'loader_cifar_train.pt')
 filepath_loader_test0 = os.path.join(dir_cifar_clean, 'loader_cifar_test0.pt')
 filepath_loader_test1 = os.path.join(dir_cifar_clean, 'loader_cifar_test1.pt')
+# reference predictions from hmc on cifar10
+filepath_hmc_reference_preds = os.path.join(dir_src, 'neurips_bdl_starter_kit/data/cifar10/probs.csv')
 
 BATCH_SIZE = 100 # MUST BE 100 TO MATCH STUDY
 BATCH_SIZE_TEST = 100 # MUST BE 100 TO MATCH STUDY
 
 
 def main(model_key, prior_variance, str_device='mps'):
+    """In this colab we train an approximate maximum-a-posteriori (MAP) 
+    solution as our submission for simplicity. You can find efficient 
+    implementations of more advanced baselines in jax 
+    [here](https://github.com/google-research/google-research/tree/master/bnn_hmc).
+    
+    We use SGD with momentum. You can adjust the hyper-parameters or switch 
+    to a different optimizer by changing the code below. We run training for 5 
+    epochs, which can take several minutes to complete. Note that in order to 
+    achieve good results you need to run the method substantially longer and 
+    tune the hyper-parameters.
+
+    Args:
+        model_key (_type_): _description_
+        prior_variance (_type_): _description_
+        str_device (str, optional): _description_. Defaults to 'mps'.
+
+    Returns:
+        _type_: _description_
+    """
+    
     # device config
     device = torch.device(str_device)
 
-    # Get model
+    # Model init
+    # define
     net_fn =  p_models.get_model(model_key, data_info={"num_classes": 10})
+    # assign to device
     if torch.cuda.is_available():
         print("GPU available!")
         net_fn = net_fn.cuda()
@@ -41,7 +84,7 @@ def main(model_key, prior_variance, str_device='mps'):
     # define likelihood function w.r.t. 'batch'
     def log_likelihood_fn(model_state_dict, batch):
         """Computes the log-likelihood.
-        TODO - extend to 
+        TODO - extend to allow function to be stand alone
         """
         x, y = batch
         if torch.cuda.is_available():
@@ -117,11 +160,49 @@ def main(model_key, prior_variance, str_device='mps'):
     momentum_decay = 0.9
     lr = 0.001
     
+    # Get loaders
     loader_train = torch.load(filepath_loader_train)
     loader_test0 = torch.load(filepath_loader_test0)
-    loader_test1 = torch.load(filepath_loader_test1)
+    # loader_test1 = torch.load(filepath_loader_test1)
+    epoch_steps = len(loader_train)
 
+    optimizer = optim.SGD(net_fn.parameters(), lr=lr, momentum=momentum_decay)
 
+    # training
+    #
+    for epoch in range(num_epochs):
+        running_loss = 0.0
+        total_loss = 0.0
+        for i, data in enumerate(loader_train):
+            optimizer.zero_grad()
+            model_state_dict = copy.deepcopy(net_fn.state_dict())
+            loss = - log_posterior_fn(model_state_dict, data)
+            loss.backward()
+            optimizer.step()
+            running_loss += loss.item()
+            total_loss += loss.item()
+            if i % 100 == 99:    # print every 100 mini-batches
+                print('[%d, %5d] loss: %.3f' %
+                        (epoch + 1, i + 1, running_loss / 100))
+                running_loss = 0.0
+        model_state_dict = copy.deepcopy(net_fn.state_dict())
+        test_acc, all_test_probs = evaluate_fn(loader_test0, model_state_dict)
+        print("Epoch {}".format(epoch))
+        print("\tAverage loss: {}".format(total_loss / epoch_steps))
+        print("\tTest accuracy: {}".format(test_acc))
+
+    # evaluation
+    # 
+    all_test_probs = np.asarray(all_test_probs.cpu())
+    # We can load the HMC reference predictions from the starter kit as well.
+    with open(filepath_hmc_reference_preds, 'r') as fp:
+        reference = np.loadtxt(fp)
+
+    agreement = metrics.agreement(all_test_probs, reference)
+    tvd = metrics.total_variation_distance(all_test_probs, reference)
+
+    print(agreement)
+    print(tvd)
 
 if __name__ == '__main__':
     

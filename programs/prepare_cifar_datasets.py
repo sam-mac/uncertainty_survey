@@ -8,16 +8,17 @@ import torch
 from torch.utils.data import DataLoader, TensorDataset
 import torch.optim as optim
 
-# global variables....
+# global variables...
 
 # directories
 dir_data = os.path.join(os.path.dirname(__file__), '../data')
+dir_raw = os.path.join(dir_data, 'raw')
 dir_processing = os.path.join(dir_data, 'processing')
 dir_cifar_clean = os.path.join(dir_processing, 'cifar')
 # filenames
 # raw cifar 
-dir_cifar_bdl = os.path.join(dir_data, 'cifar10_bdl_comp')
-dir_cifar10_1 = os.path.join(dir_data, 'cifar10.1')
+dir_cifar_bdl = os.path.join(dir_raw, 'cifar10_bdl_comp')
+dir_cifar10_1 = os.path.join(dir_raw, 'cifar10.1')
 # dataset filenames
 filepath_dataset_train = os.path.join(dir_cifar_clean, 'dataset_cifar_train.pt')
 filepath_dataset_test0 = os.path.join(dir_cifar_clean, 'dataset_cifar_test0.pt')
@@ -30,7 +31,8 @@ filepath_loader_test1 = os.path.join(dir_cifar_clean, 'loader_cifar_test1.pt')
 BATCH_SIZE = 100 # MUST BE 100 TO MATCH STUDY
 BATCH_SIZE_TEST = 100 # MUST BE 100 TO MATCH STUDY
 
-cifar10_label_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+# for cifar10.1
+cifar10_label_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck'] 
 
 def download_raw_cifar_bdl(_dir):
     

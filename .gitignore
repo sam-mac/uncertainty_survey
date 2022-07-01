@@ -2,3 +2,5 @@
 data/*
 !data/__init__.py 
 !data/results/__init__.py
+!data/raw/__init__.py
+!data/processing/__init__.py
