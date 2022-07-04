@@ -38,9 +38,19 @@ We aspire (in the PhD) to create an interpretable model for multi-modal omics pr
 The problem is that technical and biological confounders cause distribution shifts in multi-omic inference. Further, the task we model has a lot of (heteroscedastic) noise.
 
 Hence, the problem is specificaly:
-- distribution shifts in lieu of (principled) adaptive inference is unreliable
-- uncertainties are overconfident or miscalibrated
-- high-dimensionality of data requires deep learning models which are non-interpretable (i.e. black-box)
+- multi-omics data are high-dimensional which makes deep learning (DL) attractive, but
+- data hosts (heteroscedastic) noise and is distributionally inconsistent
+- distribution shifts in lieu of (principled) adaptive inference is unreliable, unsafe, which hinders DL adoption (in practice)
+- Unreliability is w.r.t. accuracy and uncertainty (miscalibration), which renders notions of significance and causality unreliable too...
+
+## Solution Strategy
+Practically driven/directed (i.e. in omics), theoretically focused - Relevant Rigour Research. Must be important, accessible, and suitable. 
+
+**Importance** guaranteed by everyones input. Focuses on key issue (ref problem definition). Real data hence real-world. Very timely since growth in research interest.
+
+**Accessibility** facilitated by making research understandable via making survey open-source code. Writing papers (and perhaps blogs). Communications may focus on results, rather than proces, without diminishing necessity of process.
+
+**Suitable** - when are we complete? Communicate guidance and/or direction. Give concrete directions.
 
 ## Solution Design
 
@@ -126,7 +136,9 @@ Basically, the following set of combinations will be implemented; that defines t
 
 ## (out-of-scope) 
 In the future focus on $\mathcal{A}$.
+- **graph neural networks**
 - deep GP
 - deep kernel learning
 - meta learning is for distribution shift
 - active learning is distribution shift
+- causal model's (law of independent mechanisms)
