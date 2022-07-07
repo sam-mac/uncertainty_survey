@@ -4,18 +4,18 @@ Survey of a few methods for inferring posterior, which is required for ascertain
 ## Tasks
 
 #### TODO
-- Implement anything on CIFAR-10 
+- validate weiner
+- Implement MAP solution (HMC architecture) on cifar10 
 - Conda yaml to base of repo
 - 1. ensure cifar_bdl and cifar_10_1 align w.r.t. image shape and labels
 - 2. ensure cifar10 test isnt validation...
-- validate laptop 
-- validate weiner
 - Implement basic report output
 - Implement Baseline LL solution on CIFAR-10
 - Implement Laplace inference on CIFAR-10
 - Implement SG-MCMC inference on CIFAR-10
 
 #### DONE
+- validate laptop 
 - bash script for obtaining CIFAR-10.1 data
 - basic py script for uploading CIFAR-10.1 data
 - basic py script for uploading hmcbaseline CIFAR-10.1 data
