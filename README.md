@@ -31,7 +31,6 @@ Survey of a few methods for inferring posterior, which is required for ascertain
 
 # Structure of Survey
 
-
 ## Motivation and Problem Definition
 We aspire (in the PhD) to create an interpretable model for multi-modal omics problems in order to make statements about safety and scientific explanations (i.e. need *transparency*) 
 
@@ -56,7 +55,7 @@ Practically driven/directed (i.e. in omics), theoretically focused - Relevant Ri
 
 The predictive marginal distribution is given as
 
-$$p(y*|x*, \mathcal{D}, \mathcal{A}) = \int_{\Theta \in \Omega}{p(y*|x*,\Theta)p(\Theta|\mathcal{D}, \mathcal{A})} d\Theta,$$
+$$p(y*|x*, \mathcal{D}, \mathcal{A}) = \int_{\Theta \in \Omega}{p(y*|x*, \mathcal{D}, \mathcal{A}, \Theta)p(\Theta|\mathcal{D}, \mathcal{A})} d\Theta,$$
 which requies evaluating the parametric posterior:
 $$p(\Theta|\mathcal{D}, \mathcal{A}) = \frac{p(\mathcal{D}|\Theta, \mathcal{A})p(\Theta|\mathcal{A})}{p(D)}.$$
 
@@ -70,10 +69,11 @@ where
 
 Hence, we must be aware of
 
-- **Evidence** p(D)
-- **Likelihood** $p(y|x*, D, A, \Theta)$
-- **Predictive prior** $p(\Theta|\mathcal{D}, \mathcal{A})$
-    - updated with posterior inference… 
+- **Evidence** $p(D)$
+- **Likelihood** $p(y*|x*, \mathcal{D}, \mathcal{A}, \Theta)$
+- **Predictive Prior / Parametric Posterior** $p(\Theta|\mathcal{D}, \mathcal{A})=\frac{p(\mathcal{D}|\Theta, \mathcal{A})p(\Theta|\mathcal{D}, \mathcal{A})}{p(\mathcal{D})}$,
+
+This posterior must be estimated via '*approximate* posterior inference' since $p(\mathcal{D})=\int p(\mathcal{D}, \Theta) d\Theta$ is intractable.
 
 ## Focused Aim
 This survey will focus on $p(\Theta|\mathcal{D}, \mathcal{A})$ as the central object of interest (to ramp the Bayesian crank). 
@@ -104,7 +104,7 @@ Basically, the following set of combinations will be implemented; that defines t
 -   {later} NLP (transfer learning)
 	-   [[Shifts (comp)]]
 
-#### Priors (Fixed / abstracted away)
+#### Priors
 
 **Inductive Priors:**
 - {consider} weight init (Gaussian or sparsity promoting, e.g. Laplace prior)
@@ -119,7 +119,7 @@ Basically, the following set of combinations will be implemented; that defines t
 - {later} learning prior using the Marginal Likelihood … needs to be in function space, not weight space (e.g. with kernels..)
 - {later} meta-learning? 
 
-#### Likelihoods are mostly fixed
+#### Likelihoods
 
 - {consider} **categorical** -> CIFAR
 - {consider? / later if time permits} **dirichlet** -> CIFAR
@@ -128,11 +128,28 @@ Basically, the following set of combinations will be implemented; that defines t
 - {later} gaussian -> weather?
 - {later} tempered likelihood for cold/hot posterior sect Likelihood for BNNs
 
-#### Priors are mostly fixed
-
-**Inductive Priors:**
-- {consider} dropout
-- {consider} weight decay, 
+#### Approximate Posterior (i.e. Predictive Prior)
+- {consider} pointwise MAP solution 
+- {consider} Laplace
+	- [simple eg](https://arxiv.org/abs/2106.14806)
+- {consider} (SG) MCMC 
+	- [SGLD](https://github.com/alisiahkoohi/Langevin-dynamics)
+	- [cSGHMC](https://arxiv.org/abs/1902.03932v2)
+- {consider} VI
+	- normalising flow
+	- BBB
+	- GNVI
+- {consider} Deep Kernel Learning
+	- inducing points
+	- random fourier approximation
+- {consider} Dropout
+	- naive 
+	- extended
+- {consider} Ensembles
+	- deep ensembles (original)
+	- batched 
+- {later} Gradient based method
+	- SWAG
 
 ## (out-of-scope) 
 In the future focus on $\mathcal{A}$.
